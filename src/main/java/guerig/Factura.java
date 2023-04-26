@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.DoubleStream;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  *
@@ -23,66 +24,46 @@ public class Factura {
     public static void setGenerar(Random aGenerar) {
         generar = aGenerar;
     }
-    private String CODIGO;
-    private LocalDateTime fechaEmision;
+    private String codigo;
+    private LocalDate fechaEmision;
     private String descripcion;
-    private DoubleStream totalImporteFactura;
-    private static Random generar = new Random();
-
-    public Factura(String CODIGO, LocalDateTime fechaEmision, String descripcion, DoubleStream totalImporteFactura) {
-        this.CODIGO = CODIGO;
-        this.fechaEmision = fechaEmision;
-        this.descripcion = descripcion;
-        this.totalImporteFactura = totalImporteFactura;
-    }
-    
+    private double totalImporteFactura;
+    private static Random generar = new Random();    
+    private static int contador = 0;
     
 
     public Factura() {
-        this.CODIGO = CODIGO;
+        this.codigo = String.valueOf(contador++);
         
-        LocalDateTime ahora = LocalDateTime.now();
-        this.fechaEmision = ahora;
+        this.fechaEmision = LocalDate.now(); // Sacar fecha actual del sistema
         
-        this.descripcion = "asdfas";
+        this.descripcion = RandomStringUtils.randomAlphabetic(50);
         
         this.totalImporteFactura = generarDouble();
-        
-        Factura factura = new Factura("1", fechaEmision, descripcion, totalImporteFactura);
-        
     }
     
-    public static DoubleStream generarDouble(){
-        DoubleStream res = generar.doubles(100, 100, 1000);
+    public static double generarDouble(){
+        DoubleStream stream = generar.doubles(1, 100, 1000);
+        
+        // findFirst() devuelve el primer elemento que encuentre
+        // getAsDouble() devuelve el elemento como tipo double
+        double res = stream.findFirst().getAsDouble(); // Si no se hace esto funciona pero no sale el resultado esperado
         return res;
-    }
-    
-    
-//    public static String contadorInstancias(List<Factura> fact){
-//        
-//        int contador = 0;
-//        
-//        for (int i = 0; i < fact.size(); i++) {
-//            contador++;
-//        }
-//        String res = String.valueOf(contador);
-//        
-//        return res;        
-//    }
+    }    
 
-    public String getCODIGO() {
-        return CODIGO;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCODIGO(String CODIGO) {
-        this.CODIGO = CODIGO;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
-    public LocalDateTime getFechaEmision() {
+    public LocalDate getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(LocalDateTime fechaEmision) {
+    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
@@ -94,11 +75,11 @@ public class Factura {
         this.descripcion = descripcion;
     }
 
-    public DoubleStream getTotalImporteFactura() {
+    public double getTotalImporteFactura() {
         return totalImporteFactura;
     }
 
-    public void setTotalImporteFactura(DoubleStream totalImporteFactura) {
+    public void setTotalImporteFactura(double totalImporteFactura) {
         this.totalImporteFactura = totalImporteFactura;
     }
 
@@ -106,21 +87,15 @@ public class Factura {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Factura{");
-        sb.append("CODIGO=").append(CODIGO).append(";");
+        sb.append("CODIGO=").append(codigo).append(";");
         sb.append("fechaEmision=").append(fechaEmision).append(";");;
         sb.append("descripcion=").append(descripcion).append(";");;
         sb.append("totalImporteFactura=").append(totalImporteFactura).append(";");;
         sb.append('}');
         return sb.toString();
-    }
-
-    
-    
-   
-    
-    
-    
-    
+    }  
+        
+        
     
     
 }
